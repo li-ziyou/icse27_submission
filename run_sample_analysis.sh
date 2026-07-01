@@ -4,8 +4,6 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [[ -n "${PYTHON_BIN:-}" ]]; then
   PYTHON_BIN="$PYTHON_BIN"
-elif [[ -x /opt/anaconda3/bin/python ]]; then
-  PYTHON_BIN="/opt/anaconda3/bin/python"
 else
   PYTHON_BIN="python3"
 fi

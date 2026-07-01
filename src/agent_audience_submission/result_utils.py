@@ -69,9 +69,10 @@ def dataset_row_counts(dataset_dir: Path) -> dict[str, int]:
     if not dataset_dir.exists():
         return counts
     for csv_path in sorted(dataset_dir.glob("*.csv")):
-        with csv_path.open("r", encoding="utf-8", errors="ignore") as handle:
-            line_count = sum(1 for _ in handle)
-        counts[csv_path.name] = max(line_count - 1, 0)
+        row_count = 0
+        for chunk in pd.read_csv(csv_path, usecols=[0], chunksize=100_000, low_memory=False):
+            row_count += len(chunk)
+        counts[csv_path.name] = row_count
     return counts
 
 

@@ -2,7 +2,7 @@
 """Generate manuscript-style figures from the released ICSE 2027 sample.
 
 The full paper figures are generated from the full dataset. This script uses
-the released 10% PR-level sample and reproduces the same figure families,
+the released 50% PR-level sample and reproduces the same figure families,
 filenames, axes, and visual grammar on the sampled data.
 """
 
@@ -21,6 +21,7 @@ from matplotlib.patches import Patch
 
 
 PAPER_TITLE = "Characterizing Human-Agent Dynamics in Agentic Pull Requests"
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 START_DATE = "2025-04-01"
 END_DATE = "2026-01-31"
 AGENTS_IN_SCOPE = {
@@ -81,6 +82,14 @@ INTENT_COLOR = {
     "Process": COLORS["blue"],
     "Validation": COLORS["orange"],
 }
+
+
+def package_relative_path(path: Path) -> str:
+    resolved = path.expanduser().resolve()
+    try:
+        return str(resolved.relative_to(PACKAGE_ROOT))
+    except ValueError:
+        return str(path)
 PATHWAY_ORDER = [
     "no_visible_feedback",
     "feedback_without_code_response",
@@ -1230,10 +1239,10 @@ def main() -> int:
 
     manifest = {
         "paper_title": PAPER_TITLE,
-        "data_dir": str(args.data_dir),
-        "run_dir": str(args.run_dir),
+        "data_dir": package_relative_path(args.data_dir),
+        "run_dir": package_relative_path(args.run_dir),
         "figures": sorted(path.name for path in args.figure_dir.glob("*.pdf")),
-        "figure_map_csv": str(args.table_dir / "manuscript_figure_map.csv"),
+        "figure_map_csv": package_relative_path(args.table_dir / "manuscript_figure_map.csv"),
         "figure_map": FIGURE_MAP,
         "used_derived_inputs": used_derived_inputs,
         "agent_prs": int(len(agent_prs)),

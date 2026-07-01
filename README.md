@@ -1,6 +1,6 @@
 # Characterizing Human-Agent Dynamics in Agentic Pull Requests
 
-This folder contains the ICSE 2027 artifact package for reproducing the paper analyses on a deterministic 10% PR-level sample of the dataset.
+This folder contains the ICSE 2027 artifact package for reproducing the paper analyses on a deterministic 50% PR-level sample of the dataset.
 
 ## Contents
 
@@ -8,23 +8,21 @@ This folder contains the ICSE 2027 artifact package for reproducing the paper an
 - `data/derived/` contains sampled paper-derived retained-feedback labels and the footprint score table used by manuscript figure generation.
 - `scripts/run_reproduction.py` runs the analysis pipeline and bundles the results.
 - `scripts/generate_manuscript_figures.py` generates the current manuscript figure set from the sample run.
-- `scripts/package_submission_dataset.py` rebuilds the 10% sample from a full `combined_dataset` source, if the full data are available.
+- `scripts/package_submission_dataset.py` rebuilds the 50% sample from a full `combined_dataset` source, if the full data are available.
 - `src/agent_audience_submission/` contains the analysis pipeline code.
 - `resources/vader_lexicon.txt` is the local sentiment lexicon used by the pipeline.
-- `results/submission_sample/` contains a previously generated sample run.
 - `requirements.txt` lists the Python dependencies.
 
 ## Dataset
 
-The released CSVs are a deterministic random sample at the PR level with `sample_fraction=0.10` and `seed=7`.
+The released CSVs are a deterministic stratified systematic sample at the PR level with `sample_fraction=0.50` and `seed=7`.
 After PRs are sampled, comments, reviews, commits, and repository rows are filtered to the sampled PR IDs.
 The issue tables are omitted from this release.
 `users.csv` is kept intact because the footprint-score construction uses the full public user metadata table.
 The derived retained-feedback files are filtered to the sampled agent-authored PRs.
 `data/derived/footprint_scores.csv` is kept intact because the manuscript defines footprint-score quartiles over the full agent-scope scoreable account set.
 
-Row counts for the source and sampled tables are recorded in `data/combined_dataset/sample_manifest.json`.
-Because this package contains a 10% sample, regenerated numeric results will not exactly match the full-paper values.
+Because this package contains a 50% sample, regenerated numeric results will not exactly match the full-paper values.
 The package reproduces the analysis workflow, table construction, and current manuscript figure families on the released sample.
 When `data/derived/` is present, manuscript figures use the same retained-feedback labels, refined actor classes, and footprint-score definitions as the paper.
 
@@ -52,6 +50,7 @@ The script writes a fresh run to:
 - `results/submission_sample/manuscript_tables/`
 - `results/submission_sample/results_bundle.json`
 
+Generated run outputs are local artifacts and are not committed.
 The `figures/` directory contains the manuscript analysis/result figures generated from the sample run.
 The illustrative workflow/example figure is omitted because it is not a sample-derived result.
 Text-only results are kept in CSV outputs rather than converted into extra plots.
@@ -100,9 +99,10 @@ python scripts/package_submission_dataset.py \
   --source-dir /path/to/full/combined_dataset \
   --dest-dir data/combined_dataset \
   --derived-source-dir /path/to/paper/derived_tables \
-  --sample-fraction 0.10 \
+  --sample-fraction 0.50 \
   --seed 7
 ```
 
-This sampling step is deterministic.
+This sampling step is deterministic and preserves high-level PR distributions across author/source, state, review decision, month, and PR-size order.
 If `--derived-source-dir` is provided, the script also writes sampled derived tables to `data/derived/`.
+The packaging script writes a local `data/combined_dataset/sample_manifest.json`; it is ignored by git.

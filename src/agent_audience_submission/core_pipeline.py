@@ -1133,6 +1133,13 @@ def classify_actor_as_ai(name, email, agent_name):
 
     email_lower = email.lower() if email else ''
 
+    if isinstance(agent_name, str):
+        agent_lower = agent_name.lower()
+    elif agent_name is None or pd.isna(agent_name):
+        agent_lower = ''
+    else:
+        agent_lower = str(agent_name).lower()
+
     if '[bot]' in name_lower:
 
         is_ai = True
@@ -1189,7 +1196,7 @@ def classify_actor_as_ai(name, email, agent_name):
 
         signals.append('ai_keywords_in_name')
 
-    if agent_name and any(ai_indicator in agent_name.lower() for ai_indicator in ['bot', 'ai', 'automated', 'agent']):
+    if agent_lower and any(ai_indicator in agent_lower for ai_indicator in ['bot', 'ai', 'automated', 'agent']):
 
         signals.append('agent_context_suggests_ai')
 

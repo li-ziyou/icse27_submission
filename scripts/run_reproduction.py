@@ -90,6 +90,11 @@ def _portable_path(path: Path) -> str:
         return str(resolved)
 
 
+def _portable_executable(executable: str) -> str:
+    path = Path(executable)
+    return path.name if path.is_absolute() else executable
+
+
 def main() -> int:
     args = parse_args()
     workdir = (args.workdir or (ROOT / "results" / args.run_name)).expanduser().resolve()
@@ -116,7 +121,7 @@ def main() -> int:
         "start_date": args.start_date,
         "end_date": args.end_date,
         "drop_issues": args.drop_issues,
-        "python_executable": args.python_executable,
+        "python_executable": _portable_executable(args.python_executable),
         "dataset_row_counts": dataset_row_counts(args.dataset_dir.expanduser().resolve()),
     }
     bundle_path = bundle_results(workdir, metadata)
