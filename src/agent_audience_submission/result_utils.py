@@ -14,8 +14,6 @@ RESULT_TABLES = {
     "outputs/baseline_latency_summary.csv": "baseline_latency",
     "outputs/baseline_merge_proxy.csv": "baseline_merge_proxy",
     "outputs/sentiment_vader_robustness.csv": "sentiment_summary",
-    "outputs/pathway_share_by_seniority.csv": "pathway_share_by_seniority",
-    "outputs/pathway_mix_by_seniority_pivot.csv": "pathway_mix_by_seniority_pivot",
     "outputs/comment_intent_signals_by_pathway.csv": "intent_signals_by_pathway",
     "outputs/comment_intent_signals_stats.csv": "intent_signals_stats",
     "outputs/comment_intent_signal_examples.csv": "intent_signal_examples",
@@ -27,7 +25,6 @@ RESULT_TABLES = {
 }
 
 EXPECTED_ARTIFACTS = [
-    "figures/rq1_seniority.pdf",
     "outputs/rq1_intensity.csv",
     "outputs/pdf_tables/rq1_intensity.pdf",
     "outputs/pdf_tables/rq2_first_action.pdf",
@@ -39,9 +36,6 @@ EXPECTED_ARTIFACTS = [
     "figures/fig_baseline_latency_log.pdf",
     "figures/fig_first_action.pdf",
     "figures/rq2_timeline_example.pdf",
-    "outputs/pathway_share_by_seniority.csv",
-    "outputs/pathway_mix_by_seniority_pivot.csv",
-    "outputs/pdf_tables/pathway_mix_by_seniority.pdf",
     "figures/fig_pathway_summary.pdf",
     "outputs/pathway_summary_metrics.csv",
 ]

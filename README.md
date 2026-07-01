@@ -5,7 +5,7 @@ This folder contains the ICSE 2027 artifact package for reproducing the paper an
 ## Contents
 
 - `data/combined_dataset/` contains the sampled CSV dataset.
-- `data/derived/` contains sampled paper-derived retained-feedback labels and the seniority score table used by manuscript figure generation.
+- `data/derived/` contains sampled paper-derived retained-feedback labels and the footprint score table used by manuscript figure generation.
 - `scripts/run_reproduction.py` runs the analysis pipeline and bundles the results.
 - `scripts/generate_manuscript_figures.py` generates the current manuscript figure set from the sample run.
 - `scripts/package_submission_dataset.py` rebuilds the 10% sample from a full `combined_dataset` source, if the full data are available.
@@ -19,14 +19,14 @@ This folder contains the ICSE 2027 artifact package for reproducing the paper an
 The released CSVs are a deterministic random sample at the PR level with `sample_fraction=0.10` and `seed=7`.
 After PRs are sampled, comments, reviews, commits, and repository rows are filtered to the sampled PR IDs.
 The issue tables are omitted from this release.
-`users.csv` is kept intact because the activity-score construction uses the full public user metadata table.
+`users.csv` is kept intact because the footprint-score construction uses the full public user metadata table.
 The derived retained-feedback files are filtered to the sampled agent-authored PRs.
-`data/derived/seniority_scores.csv` is kept intact because the manuscript defines activity-score quartiles over the full agent-scope scoreable account set.
+`data/derived/footprint_scores.csv` is kept intact because the manuscript defines footprint-score quartiles over the full agent-scope scoreable account set.
 
 Row counts for the source and sampled tables are recorded in `data/combined_dataset/sample_manifest.json`.
 Because this package contains a 10% sample, regenerated numeric results will not exactly match the full-paper values.
 The package reproduces the analysis workflow, table construction, and current manuscript figure families on the released sample.
-When `data/derived/` is present, manuscript figures use the same retained-feedback labels, refined actor classes, and seniority-score definitions as the paper.
+When `data/derived/` is present, manuscript figures use the same retained-feedback labels, refined actor classes, and footprint-score definitions as the paper.
 
 ## Requirements
 
@@ -59,7 +59,7 @@ The mapping from manuscript labels to artifact files is written to `results/subm
 
 The generated figure files are:
 
-- `fig_rq1_activity_score_strip`
+- `fig_rq1_footprint_score_strip`
 - `fig_rq1_human_triager_quartiles`
 - `fig_rq2_feedback_body_syntax`
 - `fig_rq2_feedback_actor_intent`

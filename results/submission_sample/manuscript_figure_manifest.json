@@ -7,7 +7,7 @@
     "fig_results_integration_by_pathway.pdf",
     "fig_results_post_feedback_revision.pdf",
     "fig_results_rq4_endpoint_delta.pdf",
-    "fig_rq1_activity_score_strip.pdf",
+    "fig_rq1_footprint_score_strip.pdf",
     "fig_rq1_human_triager_quartiles.pdf",
     "fig_rq2_feedback_actor_intent.pdf",
     "fig_rq2_feedback_body_syntax.pdf"
@@ -15,9 +15,9 @@
   "figure_map_csv": "/Users/zli38/IdeaProjects/agent_user/icse2027_data/results/submission_sample/manuscript_tables/manuscript_figure_map.csv",
   "figure_map": [
     {
-      "latex_label": "fig:rq1_human_activity",
-      "figure_file": "fig_rq1_activity_score_strip.pdf; fig_rq1_human_triager_quartiles.pdf",
-      "source_csv": "fig_rq1_human_activity_source.csv; sample_activity_scores.csv",
+      "latex_label": "fig:rq1_human_footprint",
+      "figure_file": "fig_rq1_footprint_score_strip.pdf; fig_rq1_human_triager_quartiles.pdf",
+      "source_csv": "fig_rq1_human_footprint_source.csv; sample_footprint_scores.csv",
       "artifact_note": "Two manuscript panels in one LaTeX figure environment."
     },
     {

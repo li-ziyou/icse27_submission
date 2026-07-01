@@ -76,11 +76,13 @@ def write_sampled_derived_tables(source_dir: Path, dest_dir: Path, sampled_agent
         sampled.to_csv(dest_dir / filename, index=False)
         written_counts[filename] = len(sampled)
 
-    scores_path = source_dir / "seniority_scores.csv"
+    scores_path = source_dir / "footprint_scores.csv"
+    if not scores_path.exists():
+        scores_path = source_dir / "seniority_scores.csv"
     if scores_path.exists():
         scores = pd.read_csv(scores_path, low_memory=False)
-        scores.to_csv(dest_dir / "seniority_scores.csv", index=False)
-        written_counts["seniority_scores.csv"] = len(scores)
+        scores.to_csv(dest_dir / "footprint_scores.csv", index=False)
+        written_counts["footprint_scores.csv"] = len(scores)
     return written_counts
 
 

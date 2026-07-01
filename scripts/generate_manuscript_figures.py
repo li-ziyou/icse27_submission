@@ -169,9 +169,9 @@ AUTOMATION_BOT_PATTERNS = [
 ]
 FIGURE_MAP = [
     {
-        "latex_label": "fig:rq1_human_activity",
-        "figure_file": "fig_rq1_activity_score_strip.pdf; fig_rq1_human_triager_quartiles.pdf",
-        "source_csv": "fig_rq1_human_activity_source.csv; sample_activity_scores.csv",
+        "latex_label": "fig:rq1_human_footprint",
+        "figure_file": "fig_rq1_footprint_score_strip.pdf; fig_rq1_human_triager_quartiles.pdf",
+        "source_csv": "fig_rq1_human_footprint_source.csv; sample_footprint_scores.csv",
         "artifact_note": "Two manuscript panels in one LaTeX figure environment.",
     },
     {
@@ -343,7 +343,7 @@ def derived_inputs_available(data_dir: Path) -> bool:
         for name in [
             "engagement_feedback_events_filtered.csv",
             "comment_feedback_intent_labels.csv",
-            "seniority_scores.csv",
+            "footprint_scores.csv",
         ]
     )
 
@@ -381,7 +381,7 @@ def add_refined_feedback_actor(events: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_paper_scores(data_dir: Path) -> pd.DataFrame:
-    scores = pd.read_csv(data_derived_dir(data_dir) / "seniority_scores.csv", low_memory=False)
+    scores = pd.read_csv(data_derived_dir(data_dir) / "footprint_scores.csv", low_memory=False)
     scores["login"] = scores["user_login_norm"].fillna("").astype(str).str.strip().str.lower()
     scores[SCORE_COL] = pd.to_numeric(scores[PAPER_SCORE_COL], errors="coerce")
     scoped = scores.loc[
@@ -662,7 +662,7 @@ def build_pr_metrics(agent_prs: pd.DataFrame, events: pd.DataFrame, commits: pd.
     return pr
 
 
-def build_activity_scores(data_dir: Path) -> pd.DataFrame:
+def build_footprint_scores(data_dir: Path) -> pd.DataFrame:
     users = pd.read_csv(data_dir / "users.csv", low_memory=False)
     users["login"] = users["user_login"].fillna("").astype(str).str.strip().str.lower()
 
@@ -760,28 +760,28 @@ def draw_interval_rows(
     style_ax(ax)
 
 
-def fig_rq1_activity(scores: pd.DataFrame, first_human: pd.DataFrame, figure_dir: Path, table_dir: Path) -> None:
+def fig_rq1_footprint(scores: pd.DataFrame, first_human: pd.DataFrame, figure_dir: Path, table_dir: Path) -> None:
     table_dir.mkdir(parents=True, exist_ok=True)
-    scores.to_csv(table_dir / "sample_activity_scores.csv", index=False)
+    scores.to_csv(table_dir / "sample_footprint_scores.csv", index=False)
     values = scores[SCORE_COL].dropna().to_numpy()
     q1, q2, q3 = np.quantile(values, [0.25, 0.50, 0.75])
     fig, ax = plt.subplots(figsize=(3.43, 1.05))
     ax.hist(values, bins=np.linspace(0, 1, 28), color=COLORS["light_blue"], edgecolor=COLORS["dark"], linewidth=0.35)
     for q, color in [(q1, COLORS["orange"]), (q2, COLORS["gray"]), (q3, COLORS["green"])]:
         ax.axvline(q, color=color, linestyle="--", linewidth=1.2)
-    ax.set_xlabel("Activity score", fontsize=7.6)
+    ax.set_xlabel("Footprint score", fontsize=7.6)
     ax.set_ylabel("Accounts", fontsize=7.6)
     ax.grid(axis="y", color="#e5e7eb", linewidth=0.5)
     style_ax(ax)
-    save(fig, figure_dir, "fig_rq1_activity_score_strip")
+    save(fig, figure_dir, "fig_rq1_footprint_score_strip")
 
     counts = first_human["quartile"].value_counts().reindex(["Q1", "Q2", "Q3", "Q4"]).fillna(0)
     total = counts.sum()
     rq1_source = [
-        {"panel": "activity_score_strip", "metric": "accounts", "level": "all", "value": len(scores)},
-        {"panel": "activity_score_strip", "metric": "q1_threshold", "level": "all", "value": q1},
-        {"panel": "activity_score_strip", "metric": "median_threshold", "level": "all", "value": q2},
-        {"panel": "activity_score_strip", "metric": "q3_threshold", "level": "all", "value": q3},
+        {"panel": "footprint_score_strip", "metric": "accounts", "level": "all", "value": len(scores)},
+        {"panel": "footprint_score_strip", "metric": "q1_threshold", "level": "all", "value": q1},
+        {"panel": "footprint_score_strip", "metric": "median_threshold", "level": "all", "value": q2},
+        {"panel": "footprint_score_strip", "metric": "q3_threshold", "level": "all", "value": q3},
         {"panel": "human_triager_quartiles", "metric": "scoreable_first_human_triagers", "level": "all", "value": total},
     ]
     rq1_source.extend(
@@ -793,7 +793,7 @@ def fig_rq1_activity(scores: pd.DataFrame, first_human: pd.DataFrame, figure_dir
         }
         for quartile in ["Q1", "Q2", "Q3", "Q4"]
     )
-    pd.DataFrame(rq1_source).to_csv(table_dir / "fig_rq1_human_activity_source.csv", index=False)
+    pd.DataFrame(rq1_source).to_csv(table_dir / "fig_rq1_human_footprint_source.csv", index=False)
     fig, ax = plt.subplots(figsize=(3.43, 0.82))
     left = 0.0
     colors = ["#d7e9f7", "#bfcad4", "#8fae9a", "#4c956c"]
@@ -901,8 +901,8 @@ def fig_rq2_body_syntax(events: pd.DataFrame, figure_dir: Path, table_dir: Path)
 
 
 def fig_rq2_actor_intent(events: pd.DataFrame, first_human_scores: pd.DataFrame, figure_dir: Path, table_dir: Path) -> None:
-    activity = first_human_scores[["login", "quartile"]].drop_duplicates("login")
-    e = events.merge(activity, left_on="actor_login", right_on="login", how="left")
+    footprint = first_human_scores[["login", "quartile"]].drop_duplicates("login")
+    e = events.merge(footprint, left_on="actor_login", right_on="login", how="left")
     e["actor_slice"] = np.where(e["actor_class"].eq("Human"), e["quartile"].fillna("No metadata"), e["actor_class"])
     slice_order = [
         ("Q1", "Q1", "#cfd6de"),
@@ -1190,7 +1190,7 @@ def main() -> int:
     commits = load_commits(args.data_dir, agent_prs)
     events = attach_next_commit(events, commits)
     pr = build_pr_metrics(agent_prs, events, commits)
-    scores = build_activity_scores(args.data_dir)
+    scores = build_footprint_scores(args.data_dir)
 
     figure_events = events
     figure_scores = scores
@@ -1220,7 +1220,7 @@ def main() -> int:
 
     pd.DataFrame(FIGURE_MAP).to_csv(args.table_dir / "manuscript_figure_map.csv", index=False)
 
-    fig_rq1_activity(figure_scores, first_human, args.figure_dir, args.table_dir)
+    fig_rq1_footprint(figure_scores, first_human, args.figure_dir, args.table_dir)
     fig_rq2_body_syntax(figure_events, args.figure_dir, args.table_dir)
     fig_rq2_actor_intent(figure_events, figure_scores, args.figure_dir, args.table_dir)
     fig_latency(events, args.figure_dir, args.table_dir)

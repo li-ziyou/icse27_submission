@@ -21,7 +21,19 @@ PAPER_TITLE="Characterizing Human-Agent Dynamics in Agentic Pull Requests"
   --paper-title "$PAPER_TITLE" \
   --python-executable "$PYTHON_BIN"
 
-rm -rf "$ROOT_DIR/results/submission_sample/figures"
+rm -f \
+  "$ROOT_DIR/results/submission_sample/.pipeline_cache/pathway_share_by_seniority.csv" \
+  "$ROOT_DIR/results/submission_sample/outputs/pathway_mix_by_seniority_pivot.csv" \
+  "$ROOT_DIR/results/submission_sample/outputs/pathway_share_by_seniority.csv" \
+  "$ROOT_DIR/results/submission_sample/outputs/pdf_tables/pathway_mix_by_seniority.pdf" \
+  "$ROOT_DIR/results/submission_sample/outputs/seniority_robustness_full_tables.csv" \
+  "$ROOT_DIR/results/submission_sample/outputs/seniority_robustness_note.md" \
+  "$ROOT_DIR/results/submission_sample/outputs/seniority_robustness_summary.csv" \
+  "$ROOT_DIR/results/submission_sample/outputs/seniority_robustness_summary.tex"
+
+rm -rf \
+  "$ROOT_DIR/results/submission_sample/figures" \
+  "$ROOT_DIR/results/submission_sample/manuscript_tables"
 "$PYTHON_BIN" "$ROOT_DIR/scripts/generate_manuscript_figures.py" \
   --data-dir "$ROOT_DIR/data/combined_dataset" \
   --run-dir "$ROOT_DIR/results/submission_sample" \

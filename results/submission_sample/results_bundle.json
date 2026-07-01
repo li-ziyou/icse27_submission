@@ -26,13 +26,8 @@
       "users.csv": 85882
     }
   },
-  "generated_at_utc": "2026-07-01T00:42:23.430440+00:00",
+  "generated_at_utc": "2026-07-01T01:17:27.245895+00:00",
   "manifest": [
-    {
-      "path": "figures/rq1_seniority.pdf",
-      "exists": true,
-      "size_bytes": 14193
-    },
     {
       "path": "outputs/rq1_intensity.csv",
       "exists": true,
@@ -87,21 +82,6 @@
       "path": "figures/rq2_timeline_example.pdf",
       "exists": true,
       "size_bytes": 16014
-    },
-    {
-      "path": "outputs/pathway_share_by_seniority.csv",
-      "exists": true,
-      "size_bytes": 680
-    },
-    {
-      "path": "outputs/pathway_mix_by_seniority_pivot.csv",
-      "exists": true,
-      "size_bytes": 332
-    },
-    {
-      "path": "outputs/pdf_tables/pathway_mix_by_seniority.pdf",
-      "exists": true,
-      "size_bytes": 22338
     },
     {
       "path": "figures/fig_pathway_summary.pdf",
@@ -169,28 +149,6 @@
         "median_vader",
         "p25",
         "p75"
-      ]
-    },
-    "pathway_share_by_seniority": {
-      "source_csv": "outputs/pathway_share_by_seniority.csv",
-      "rows": 10,
-      "columns": [
-        "taxonomy_class",
-        "taxonomy_display_label",
-        "seniority",
-        "count",
-        "share"
-      ]
-    },
-    "pathway_mix_by_seniority_pivot": {
-      "source_csv": "outputs/pathway_mix_by_seniority_pivot.csv",
-      "rows": 3,
-      "columns": [
-        "taxonomy_class",
-        "taxonomy_display_label",
-        "novice",
-        "mid",
-        "expert"
       ]
     },
     "intent_signals_by_pathway": {
@@ -469,101 +427,6 @@
         "median_vader": null,
         "p25": null,
         "p75": null
-      }
-    ],
-    "pathway_share_by_seniority": [
-      {
-        "taxonomy_class": "steering",
-        "taxonomy_display_label": "Discussion only pathway",
-        "seniority": "expert",
-        "count": 3360,
-        "share": 0.5877208326045129
-      },
-      {
-        "taxonomy_class": "steering",
-        "taxonomy_display_label": "Discussion only pathway",
-        "seniority": "mid",
-        "count": 682,
-        "share": 0.1423205342237061
-      },
-      {
-        "taxonomy_class": "steering",
-        "taxonomy_display_label": "Discussion only pathway",
-        "seniority": "novice",
-        "count": 431,
-        "share": 0.0745159059474412
-      },
-      {
-        "taxonomy_class": "rewriting",
-        "taxonomy_display_label": "Early takeover pathway",
-        "seniority": "expert",
-        "count": 894,
-        "share": 0.1563757215322721
-      },
-      {
-        "taxonomy_class": "rewriting",
-        "taxonomy_display_label": "Early takeover pathway",
-        "seniority": "mid",
-        "count": 1822,
-        "share": 0.3802170283806343
-      },
-      {
-        "taxonomy_class": "rewriting",
-        "taxonomy_display_label": "Early takeover pathway",
-        "seniority": "novice",
-        "count": 2072,
-        "share": 0.3582295988934993
-      },
-      {
-        "taxonomy_class": "echo_chamber",
-        "taxonomy_display_label": "No human handling",
-        "seniority": "unknown",
-        "count": 4535,
-        "share": 1.0
-      },
-      {
-        "taxonomy_class": "human_in_loop",
-        "taxonomy_display_label": "Silent edit pathway",
-        "seniority": "expert",
-        "count": 1463,
-        "share": 0.2559034458632149
-      },
-      {
-        "taxonomy_class": "human_in_loop",
-        "taxonomy_display_label": "Silent edit pathway",
-        "seniority": "mid",
-        "count": 2288,
-        "share": 0.4774624373956594
-      },
-      {
-        "taxonomy_class": "human_in_loop",
-        "taxonomy_display_label": "Silent edit pathway",
-        "seniority": "novice",
-        "count": 3281,
-        "share": 0.5672544951590595
-      }
-    ],
-    "pathway_mix_by_seniority_pivot": [
-      {
-        "taxonomy_class": "steering",
-        "taxonomy_display_label": "Discussion only pathway",
-        "novice": 0.0745159059474412,
-        "mid": 0.1423205342237061,
-        "expert": 0.5877208326045129
-      },
-      {
-        "taxonomy_class": "rewriting",
-        "taxonomy_display_label": "Early takeover pathway",
-        "novice": 0.3582295988934993,
-        "mid": 0.3802170283806343,
-        "expert": 0.1563757215322721
-      },
-      {
-        "taxonomy_class": "human_in_loop",
-        "taxonomy_display_label": "Silent edit pathway",
-        "novice": 0.5672544951590595,
-        "mid": 0.4774624373956594,
-        "expert": 0.2559034458632149
       }
     ],
     "intent_signals_by_pathway": [
