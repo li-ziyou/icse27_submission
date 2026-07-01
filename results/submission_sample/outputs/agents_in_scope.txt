@@ -1,0 +1,14 @@
+amazon
+claude
+codegen
+codex
+copilot
+cosine
+cursor
+devin
+jules
+junie
+junieap
+openhands
+openhandsb
+tembo

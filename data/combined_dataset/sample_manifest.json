@@ -1,0 +1,33 @@
+{
+  "source_dir": "full combined_dataset source, not included in this release",
+  "dest_dir": "data/combined_dataset",
+  "sample_fraction": 0.1,
+  "seed": 7,
+  "drop_issues": true,
+  "source_row_counts": {
+    "comments.csv": 5499177,
+    "commits.csv": 3663399,
+    "human_comments.csv": 555573,
+    "human_commits.csv": 250261,
+    "human_prs.csv": 865673,
+    "human_repos.csv": 29449,
+    "human_reviews.csv": 312530,
+    "prs.csv": 12955032,
+    "repos.csv": 689298,
+    "reviews.csv": 3166934,
+    "users.csv": 85882
+  },
+  "sampled_row_counts": {
+    "comments.csv": 547015,
+    "commits.csv": 382351,
+    "human_comments.csv": 50526,
+    "human_commits.csv": 21363,
+    "human_prs.csv": 81662,
+    "human_repos.csv": 2886,
+    "human_reviews.csv": 28445,
+    "prs.csv": 1283733,
+    "repos.csv": 77771,
+    "reviews.csv": 303853,
+    "users.csv": 85882
+  }
+}

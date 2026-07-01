@@ -1,0 +1,2051 @@
+{
+  "metadata": {
+    "paper_title": "Characterizing Human-Agent Dynamics in Agentic Pull Requests",
+    "run_name": "submission_sample",
+    "workdir": "results/submission_sample",
+    "dataset_dir": "data/combined_dataset",
+    "human_dataset_dir": "data/combined_dataset",
+    "optional_dataset_dir": "data",
+    "run_fraction": 1.0,
+    "seed": 7,
+    "start_date": "2025-04-01",
+    "end_date": "2026-01-31",
+    "drop_issues": true,
+    "python_executable": "/opt/anaconda3/bin/python",
+    "dataset_row_counts": {
+      "comments.csv": 547015,
+      "commits.csv": 382351,
+      "human_comments.csv": 50526,
+      "human_commits.csv": 21363,
+      "human_prs.csv": 81662,
+      "human_repos.csv": 2886,
+      "human_reviews.csv": 28445,
+      "prs.csv": 1283733,
+      "repos.csv": 77771,
+      "reviews.csv": 303853,
+      "users.csv": 85882
+    }
+  },
+  "generated_at_utc": "2026-07-01T00:42:23.430440+00:00",
+  "manifest": [
+    {
+      "path": "figures/rq1_seniority.pdf",
+      "exists": true,
+      "size_bytes": 14193
+    },
+    {
+      "path": "outputs/rq1_intensity.csv",
+      "exists": true,
+      "size_bytes": 287
+    },
+    {
+      "path": "outputs/pdf_tables/rq1_intensity.pdf",
+      "exists": true,
+      "size_bytes": 23744
+    },
+    {
+      "path": "outputs/pdf_tables/rq2_first_action.pdf",
+      "exists": true,
+      "size_bytes": 22403
+    },
+    {
+      "path": "outputs/baseline_first_action_table.csv",
+      "exists": true,
+      "size_bytes": 380
+    },
+    {
+      "path": "outputs/baseline_latency_summary.csv",
+      "exists": true,
+      "size_bytes": 252
+    },
+    {
+      "path": "outputs/pdf_tables/rq2_latency.pdf",
+      "exists": true,
+      "size_bytes": 22370
+    },
+    {
+      "path": "outputs/baseline_merge_proxy.csv",
+      "exists": true,
+      "size_bytes": 286
+    },
+    {
+      "path": "outputs/pdf_tables/rq2_merge_proxy.pdf",
+      "exists": true,
+      "size_bytes": 20405
+    },
+    {
+      "path": "figures/fig_baseline_latency_log.pdf",
+      "exists": true,
+      "size_bytes": 13268
+    },
+    {
+      "path": "figures/fig_first_action.pdf",
+      "exists": true,
+      "size_bytes": 24914
+    },
+    {
+      "path": "figures/rq2_timeline_example.pdf",
+      "exists": true,
+      "size_bytes": 16014
+    },
+    {
+      "path": "outputs/pathway_share_by_seniority.csv",
+      "exists": true,
+      "size_bytes": 680
+    },
+    {
+      "path": "outputs/pathway_mix_by_seniority_pivot.csv",
+      "exists": true,
+      "size_bytes": 332
+    },
+    {
+      "path": "outputs/pdf_tables/pathway_mix_by_seniority.pdf",
+      "exists": true,
+      "size_bytes": 22338
+    },
+    {
+      "path": "figures/fig_pathway_summary.pdf",
+      "exists": true,
+      "size_bytes": 18433
+    },
+    {
+      "path": "outputs/pathway_summary_metrics.csv",
+      "exists": true,
+      "size_bytes": 399
+    }
+  ],
+  "table_schemas": {
+    "rq1_intensity": {
+      "source_csv": "outputs/rq1_intensity.csv",
+      "rows": 6,
+      "columns": [
+        "Metric",
+        "Total Contributions",
+        "Commits",
+        "Issues",
+        "Pull Requests",
+        "Reviews"
+      ]
+    },
+    "baseline_first_action": {
+      "source_csv": "outputs/baseline_first_action_table.csv",
+      "rows": 9,
+      "columns": [
+        "author_type_group",
+        "first_human_response_type",
+        "count",
+        "share"
+      ]
+    },
+    "baseline_latency": {
+      "source_csv": "outputs/baseline_latency_summary.csv",
+      "rows": 3,
+      "columns": [
+        "author_type_group",
+        "N",
+        "median_hours",
+        "p90_hours",
+        "p99_hours"
+      ]
+    },
+    "baseline_merge_proxy": {
+      "source_csv": "outputs/baseline_merge_proxy.csv",
+      "rows": 3,
+      "columns": [
+        "author_type_group",
+        "merged_n",
+        "commit_coverage_pct",
+        "unknown_commit_actor_pct",
+        "unknown_commit_author_pct",
+        "merged_without_non_author_commits_pct"
+      ]
+    },
+    "sentiment_summary": {
+      "source_csv": "outputs/sentiment_vader_robustness.csv",
+      "rows": 4,
+      "columns": [
+        "group",
+        "n_comments",
+        "median_vader",
+        "p25",
+        "p75"
+      ]
+    },
+    "pathway_share_by_seniority": {
+      "source_csv": "outputs/pathway_share_by_seniority.csv",
+      "rows": 10,
+      "columns": [
+        "taxonomy_class",
+        "taxonomy_display_label",
+        "seniority",
+        "count",
+        "share"
+      ]
+    },
+    "pathway_mix_by_seniority_pivot": {
+      "source_csv": "outputs/pathway_mix_by_seniority_pivot.csv",
+      "rows": 3,
+      "columns": [
+        "taxonomy_class",
+        "taxonomy_display_label",
+        "novice",
+        "mid",
+        "expert"
+      ]
+    },
+    "intent_signals_by_pathway": {
+      "source_csv": "outputs/comment_intent_signals_by_pathway.csv",
+      "rows": 2,
+      "columns": [
+        "taxonomy_display_label",
+        "N_prs",
+        "acceptance_signal_pct",
+        "evidence_request_signal_pct",
+        "change_request_signal_pct"
+      ]
+    },
+    "intent_signals_stats": {
+      "source_csv": "outputs/comment_intent_signals_stats.csv",
+      "rows": 3,
+      "columns": [
+        "signal_name",
+        "chi2",
+        "p_value",
+        "cramers_v",
+        "N"
+      ]
+    },
+    "intent_signal_examples": {
+      "source_csv": "outputs/comment_intent_signal_examples.csv",
+      "rows": 120,
+      "columns": [
+        "taxonomy_display_label",
+        "signal_name",
+        "pr_key",
+        "snippet",
+        "matched_pattern"
+      ]
+    },
+    "pathway_summary_metrics": {
+      "source_csv": "outputs/pathway_summary_metrics.csv",
+      "rows": 4,
+      "columns": [
+        "taxonomy_display_label",
+        "N_prs",
+        "share_of_prs",
+        "merged_share",
+        "median_validation_overhead",
+        "takeover_share"
+      ]
+    },
+    "baseline_sanity_checks": {
+      "source_csv": "outputs/baseline_sanity_checks.csv",
+      "rows": 15,
+      "columns": [
+        "section",
+        "group",
+        "metric",
+        "value",
+        "detail"
+      ]
+    },
+    "baseline_rq2_sanity_checks": {
+      "source_csv": "outputs/baseline_rq2_sanity_checks.csv",
+      "rows": 40,
+      "columns": [
+        "section",
+        "group",
+        "metric",
+        "value",
+        "passed",
+        "detail"
+      ]
+    },
+    "per_agent_summary": {
+      "source_csv": "outputs/per_agent_summary.csv",
+      "rows": 14,
+      "columns": [
+        "agent_name",
+        "pr_count",
+        "merged_count",
+        "share_merge_without_non_author_commits",
+        "median_response_time_hours",
+        "comment_first_share"
+      ]
+    },
+    "agent_sensitivity_drop_top": {
+      "source_csv": "outputs/agent_sensitivity_drop_top.csv",
+      "rows": 3,
+      "columns": [
+        "scenario",
+        "pr_count",
+        "median_response_time_hours",
+        "comment_first_share",
+        "share_merge_without_non_author_commits"
+      ]
+    }
+  },
+  "tables": {
+    "rq1_intensity": [
+      {
+        "Metric": "Mean",
+        "Total Contributions": "499.8",
+        "Commits": "375.5",
+        "Issues": "17.6",
+        "Pull Requests": "84.7",
+        "Reviews": "22.0"
+      },
+      {
+        "Metric": "Median",
+        "Total Contributions": "142",
+        "Commits": "105",
+        "Issues": "0",
+        "Pull Requests": "12",
+        "Reviews": "0"
+      },
+      {
+        "Metric": "Maximum",
+        "Total Contributions": "49,751",
+        "Commits": "49,732",
+        "Issues": "10,000",
+        "Pull Requests": "10,000",
+        "Reviews": "8,407"
+      },
+      {
+        "Metric": "Standard Deviation",
+        "Total Contributions": "1336.4",
+        "Commits": "1084.0",
+        "Issues": "120.3",
+        "Pull Requests": "325.9",
+        "Reviews": "134.0"
+      },
+      {
+        "Metric": "75th Percentile",
+        "Total Contributions": "477",
+        "Commits": "351",
+        "Issues": "4",
+        "Pull Requests": "61",
+        "Reviews": "2"
+      },
+      {
+        "Metric": "90th Percentile",
+        "Total Contributions": "1210",
+        "Commits": "897",
+        "Issues": "32",
+        "Pull Requests": "194",
+        "Reviews": "25"
+      }
+    ],
+    "baseline_first_action": [
+      {
+        "author_type_group": "agent",
+        "first_human_response_type": "comment",
+        "count": 4644,
+        "share": 0.5592485549132948
+      },
+      {
+        "author_type_group": "agent",
+        "first_human_response_type": "commit",
+        "count": 2206,
+        "share": 0.265655105973025
+      },
+      {
+        "author_type_group": "agent",
+        "first_human_response_type": "review",
+        "count": 1454,
+        "share": 0.1750963391136801
+      },
+      {
+        "author_type_group": "bot",
+        "first_human_response_type": "comment",
+        "count": 14,
+        "share": 0.3181818181818182
+      },
+      {
+        "author_type_group": "bot",
+        "first_human_response_type": "commit",
+        "count": 1,
+        "share": 0.0227272727272727
+      },
+      {
+        "author_type_group": "bot",
+        "first_human_response_type": "review",
+        "count": 29,
+        "share": 0.6590909090909091
+      },
+      {
+        "author_type_group": "human",
+        "first_human_response_type": "comment",
+        "count": 350,
+        "share": 0.3394762366634336
+      },
+      {
+        "author_type_group": "human",
+        "first_human_response_type": "commit",
+        "count": 296,
+        "share": 0.2870999030067895
+      },
+      {
+        "author_type_group": "human",
+        "first_human_response_type": "review",
+        "count": 385,
+        "share": 0.3734238603297769
+      }
+    ],
+    "baseline_latency": [
+      {
+        "author_type_group": "agent",
+        "N": 8304,
+        "median_hours": 0.0277777777777777,
+        "p90_hours": 3.4015555555555532,
+        "p99_hours": 286.08911666666586
+      },
+      {
+        "author_type_group": "bot",
+        "N": 44,
+        "median_hours": 0.0079166666666666,
+        "p90_hours": 2.204527777777779,
+        "p99_hours": 891.9992055555559
+      },
+      {
+        "author_type_group": "human",
+        "N": 1031,
+        "median_hours": 0.1986111111111111,
+        "p90_hours": 60.02527777777778,
+        "p99_hours": 805.041694444446
+      }
+    ],
+    "baseline_merge_proxy": [
+      {
+        "author_type_group": "agent",
+        "merged_n": 22674,
+        "commit_coverage_pct": 62.52976978036517,
+        "unknown_commit_actor_pct": 0.0,
+        "unknown_commit_author_pct": 0.0,
+        "merged_without_non_author_commits_pct": 11.412046833121735
+      },
+      {
+        "author_type_group": "bot",
+        "merged_n": 88,
+        "commit_coverage_pct": 75.0,
+        "unknown_commit_actor_pct": 0.0,
+        "unknown_commit_author_pct": 0.0,
+        "merged_without_non_author_commits_pct": 43.93939393939394
+      },
+      {
+        "author_type_group": "human",
+        "merged_n": 2175,
+        "commit_coverage_pct": 69.60919540229885,
+        "unknown_commit_actor_pct": 0.0,
+        "unknown_commit_author_pct": 0.0,
+        "merged_without_non_author_commits_pct": 30.38309114927345
+      }
+    ],
+    "sentiment_summary": [
+      {
+        "group": "novice",
+        "n_comments": 930.0,
+        "median_vader": 0.0,
+        "p25": 0.0,
+        "p75": 0.4404
+      },
+      {
+        "group": "mid",
+        "n_comments": 2810.0,
+        "median_vader": 0.0,
+        "p25": 0.0,
+        "p75": 0.4603
+      },
+      {
+        "group": "expert",
+        "n_comments": 5761.0,
+        "median_vader": 0.3612,
+        "p25": 0.0,
+        "p75": 0.7424
+      },
+      {
+        "group": "unknown",
+        "n_comments": null,
+        "median_vader": null,
+        "p25": null,
+        "p75": null
+      }
+    ],
+    "pathway_share_by_seniority": [
+      {
+        "taxonomy_class": "steering",
+        "taxonomy_display_label": "Discussion only pathway",
+        "seniority": "expert",
+        "count": 3360,
+        "share": 0.5877208326045129
+      },
+      {
+        "taxonomy_class": "steering",
+        "taxonomy_display_label": "Discussion only pathway",
+        "seniority": "mid",
+        "count": 682,
+        "share": 0.1423205342237061
+      },
+      {
+        "taxonomy_class": "steering",
+        "taxonomy_display_label": "Discussion only pathway",
+        "seniority": "novice",
+        "count": 431,
+        "share": 0.0745159059474412
+      },
+      {
+        "taxonomy_class": "rewriting",
+        "taxonomy_display_label": "Early takeover pathway",
+        "seniority": "expert",
+        "count": 894,
+        "share": 0.1563757215322721
+      },
+      {
+        "taxonomy_class": "rewriting",
+        "taxonomy_display_label": "Early takeover pathway",
+        "seniority": "mid",
+        "count": 1822,
+        "share": 0.3802170283806343
+      },
+      {
+        "taxonomy_class": "rewriting",
+        "taxonomy_display_label": "Early takeover pathway",
+        "seniority": "novice",
+        "count": 2072,
+        "share": 0.3582295988934993
+      },
+      {
+        "taxonomy_class": "echo_chamber",
+        "taxonomy_display_label": "No human handling",
+        "seniority": "unknown",
+        "count": 4535,
+        "share": 1.0
+      },
+      {
+        "taxonomy_class": "human_in_loop",
+        "taxonomy_display_label": "Silent edit pathway",
+        "seniority": "expert",
+        "count": 1463,
+        "share": 0.2559034458632149
+      },
+      {
+        "taxonomy_class": "human_in_loop",
+        "taxonomy_display_label": "Silent edit pathway",
+        "seniority": "mid",
+        "count": 2288,
+        "share": 0.4774624373956594
+      },
+      {
+        "taxonomy_class": "human_in_loop",
+        "taxonomy_display_label": "Silent edit pathway",
+        "seniority": "novice",
+        "count": 3281,
+        "share": 0.5672544951590595
+      }
+    ],
+    "pathway_mix_by_seniority_pivot": [
+      {
+        "taxonomy_class": "steering",
+        "taxonomy_display_label": "Discussion only pathway",
+        "novice": 0.0745159059474412,
+        "mid": 0.1423205342237061,
+        "expert": 0.5877208326045129
+      },
+      {
+        "taxonomy_class": "rewriting",
+        "taxonomy_display_label": "Early takeover pathway",
+        "novice": 0.3582295988934993,
+        "mid": 0.3802170283806343,
+        "expert": 0.1563757215322721
+      },
+      {
+        "taxonomy_class": "human_in_loop",
+        "taxonomy_display_label": "Silent edit pathway",
+        "novice": 0.5672544951590595,
+        "mid": 0.4774624373956594,
+        "expert": 0.2559034458632149
+      }
+    ],
+    "intent_signals_by_pathway": [
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "N_prs": 3228,
+        "acceptance_signal_pct": 53.221809169764555,
+        "evidence_request_signal_pct": 14.622057001239158,
+        "change_request_signal_pct": 8.48822800495663
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "N_prs": 3033,
+        "acceptance_signal_pct": 54.26969996702934,
+        "evidence_request_signal_pct": 24.991757335970984,
+        "change_request_signal_pct": 8.374546653478404
+      }
+    ],
+    "intent_signals_stats": [
+      {
+        "signal_name": "acceptance_signal",
+        "chi2": 0.6906805250522992,
+        "p_value": null,
+        "cramers_v": 0.0105030819326243,
+        "N": 6261
+      },
+      {
+        "signal_name": "evidence_request_signal",
+        "chi2": 106.51790690685824,
+        "p_value": null,
+        "cramers_v": 0.1304335936856017,
+        "N": 6261
+      },
+      {
+        "signal_name": "change_request_signal",
+        "chi2": 0.0261705127546579,
+        "p_value": null,
+        "cramers_v": 0.0020444865790927,
+        "N": 6261
+      }
+    ],
+    "intent_signal_examples": [
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "github-ai-agent#2",
+        "snippet": "Looks good to me",
+        "matched_pattern": "\\blooks?\\s+good(\\s+to\\s+merge)?\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "pokemondle#2",
+        "snippet": "✅ Deploy Preview for pokemondle ready! Name Link 🔨 Latest commit 20a9aad 🔍 Latest deploy log https://app.netlify.com/projects/pokemondle/deploys/68886cd26343c00008e468ec 😎 Deploy Preview https://deplo",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "xqy-markdown#20",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) xqy-markdown ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jul 30, 2025 3:30am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "docs#76",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "dr7-empire#112",
+        "snippet": "✅ Deploy Preview for dr7empire ready! Name Link 🔨 Latest commit 165c224 🔍 Latest deploy log https://app.netlify.com/projects/dr7empire/deploys/68db7165dfb8f60008077fbd 😎 Deploy Preview https://deploy-",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "davegoopot.github.io#115",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "primitives#97",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) primitives.org.ai ✅ Ready (Inspect) Visit Preview 💬 Add feedback May 6, 2025 0:06am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "studymaster#3",
+        "snippet": "✅ Deploy Preview for tourmaline-dango-b30a5d ready! Name Link 🔨 Latest commit 2307642 🔍 Latest deploy log https://app.netlify.com/projects/tourmaline-dango-b30a5d/deploys/68725af9fde66d0008498466 😎 De",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "reflex-web#1485",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "portfolio#42",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "documentation#851",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "voxpro-backend#18",
+        "snippet": "✅ Deploy Preview for majestic-beijinho-cd3d75 ready! Name Link 🔨 Latest commit c667c39 🔍 Latest deploy log https://app.netlify.com/projects/majestic-beijinho-cd3d75/deploys/68cc45a0cf16a3000852f3ce 😎",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "webtoolbox#4",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Project Deployment Preview Comments Updated (UTC) web-tool-box ✅ Ready Preview 💬 Add feedback Aug 12, 2025 4:15am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "yoga-university-mvp#132",
+        "snippet": "✅ Deploy Preview for yogauni ready! Name Link 🔨 Latest commit 800a46f 🔍 Latest deploy log https://app.netlify.com/projects/yogauni/deploys/68c3126187ea010008bbdff9 😎 Deploy Preview https://deploy-prev",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "vite-react-three#4",
+        "snippet": "LGTM!!!",
+        "matched_pattern": "\\blgtm\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "vargasjr-dev#95",
+        "snippet": "seems promising",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "dawn#1",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "my-company-site#16",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) my-company-site ✅ Ready (Inspect) Visit Preview 💬 Add feedback May 29, 2025 0:00am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "pmerit-ai-platform#7",
+        "snippet": "Let's see the UI.",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "liam#2802",
+        "snippet": "Updates to Preview Branch (devin/1753941906-remove-projectid-from-workflowstate) ↗︎ Deployments Status Updated Database ✅ Thu, 31 Jul 2025 06:11:14 UTC Services ✅ Thu, 31 Jul 2025 06:11:14 UTC APIs ✅",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "talkterms-ai#4",
+        "snippet": "✅ Deploy Preview for talkterms-ai ready! Name Link 🔨 Latest commit 947e263 🔍 Latest deploy log https://app.netlify.com/projects/talkterms-ai/deploys/68ad27b43cf62f00081eb714 😎 Deploy Preview https://d",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "ging#10",
+        "snippet": "Updates to Preview Branch (feat/ai-error-handling) ↗︎ Deployments Status Updated Database ✅ Sun, 28 Sep 2025 19:40:51 UTC Services ✅ Sun, 28 Sep 2025 19:40:51 UTC APIs ✅ Sun, 28 Sep 2025 19:40:51 UTC",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "inventory-app#459",
+        "snippet": "✅ Deploy Preview for serene-dolphin-0c28a9 ready! Name Link 🔨 Latest commit 766d3e8 🔍 Latest deploy log https://app.netlify.com/projects/serene-dolphin-0c28a9/deploys/68b5c5f99b43b700086514dc 😎 Deploy",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "talkterms-ai#9",
+        "snippet": "✅ Deploy Preview for talkterms-ai ready! Name Link 🔨 Latest commit ea19035 🔍 Latest deploy log https://app.netlify.com/projects/talkterms-ai/deploys/68add78ad131c400086277bc 😎 Deploy Preview https://d",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "dots-notifier#6",
+        "snippet": "CautionReview the following alerts detected in dependencies. According to your organization's Security Policy, you must resolve all \"Block\" alerts before proceeding. Learn more about Socket for GitHub",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "dr7-empire#11",
+        "snippet": "✅ Deploy Preview for dr7empire ready! Name Link 🔨 Latest commit c18eeb5 🔍 Latest deploy log https://app.netlify.com/projects/dr7empire/deploys/68d092827293b10008827d77 😎 Deploy Preview https://deploy-",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "pokemondle#2",
+        "snippet": "✅ Deploy Preview for pokemondle ready! Name Link 🔨 Latest commit 20a9aad 🔍 Latest deploy log https://app.netlify.com/projects/pokemondle/deploys/68886cd26343c00008e468ec 😎 Deploy Preview https://deplo",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "liam#3350",
+        "snippet": "Updates to Preview Branch (devin/1757057066-consolidate-analyzed-requirements-types) ↗︎ Deployments Status Updated Database ✅ Mon, 08 Sep 2025 05:40:08 UTC Services ✅ Mon, 08 Sep 2025 05:40:08 UTC API",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "star-crusade#2",
+        "snippet": "✅ Deploy Preview for star-crusade ready! Name Link 🔨 Latest commit d66a9ad 🔍 Latest deploy log https://app.netlify.com/projects/star-crusade/deploys/68a1b7fd11da070008262008 😎 Deploy Preview https://d",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "mcptest#173",
+        "snippet": "❌ Deployment Failed Branch: feat/mcp-server-report-card Exit Code: 1 Build Log (last 200 lines): Warning: .env file not found at /root/mcp-webhook-listener/.env Using default values or environment var",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "agentapi-proxy#223",
+        "snippet": "✅ Deploy Preview for enchanting-puffpuff-3620eb ready! Name Link 🔨 Latest commit 755e5f1 🔍 Latest deploy log https://app.netlify.com/projects/enchanting-puffpuff-3620eb/deploys/6870c7a811e51600087eb16",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "aparna_threads#4",
+        "snippet": "removal of logs",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "bluefernspa#2",
+        "snippet": "✅ Deploy Preview for bluefernspa ready! Name Link 🔨 Latest commit 865f29b 🔍 Latest deploy log https://app.netlify.com/projects/bluefernspa/deploys/68cad3ad64a52d0008773103 😎 Deploy Preview https://dep",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "cstw_trae#53",
+        "snippet": "✅ Deploy Preview for cometscanner ready! Name Link 🔨 Latest commit 54a4d87 🔍 Latest deploy log https://app.netlify.com/projects/cometscanner/deploys/68953a63c5a59a0008ec602e 😎 Deploy Preview https://d",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "shazow.net#80",
+        "snippet": "✅ Deploy Preview for shazow ready! Name Link 🔨 Latest commit b3582ab 🔍 Latest deploy log https://app.netlify.com/projects/shazow/deploys/6896361556529400083b5a74 😎 Deploy Preview https://deploy-previe",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "cli#435",
+        "snippet": "Actionable comments posted: 0 🧹 Nitpick comments (1) CHANGELOG.md (1) 11-12: Nit: Make bullet phrasing sharper and more descriptive Consider tightening the second bullet to better convey the change at",
+        "matched_pattern": "(please|can you|could you)\\s+verify"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "meridian-app-july#5",
+        "snippet": "Deploying meridian-app-july with Cloudflare Pages Latest commit: c3b9ec6 Status:🚫 Build failed. View logs",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "productled-academy#6",
+        "snippet": "✅ Deploy Preview for productledacademy ready! Name Link 🔨 Latest commit 0e52a68 🔍 Latest deploy log https://app.netlify.com/sites/productledacademy/deploys/67ef74b29acc7800088a607e 😎 Deploy Preview ht",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "subspace_chatbot#1",
+        "snippet": "✅ Deploy Preview for subspacechatbot ready! Name Link 🔨 Latest commit 8a09d9d 🔍 Latest deploy log https://app.netlify.com/projects/subspacechatbot/deploys/689f322bfe59820008c5c58b 😎 Deploy Preview htt",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "liam#2102",
+        "snippet": "Updates to Preview Branch (devin/1750394766-optimize-ci-performance) ↗︎ Deployments Status Updated Database ✅ Fri, 20 Jun 2025 05:14:48 UTC Services ✅ Fri, 20 Jun 2025 05:14:48 UTC APIs ✅ Fri, 20 Jun",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "pdfout#94",
+        "snippet": "eine DateTime Class gibt es in REDAXO nicht siehe https://github.com/redaxo/redaxo und https://redaxo.org/doku/main/formatierungen oder nutz doch für die demo einfach die php eigenen methode",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "vargasjr-dev#502",
+        "snippet": "✅ No database migrations needed Your database schema is already up to date with the latest changes. No SQL statements need to be applied.",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "em#3001",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "poloniex-trading-platform#172",
+        "snippet": "PR Reviewer Guide 🔍 Here are some key observations to aid the review process: ⏱️ Estimated effort to review: 4 🔵🔵🔵🔵⚪ 🧪 PR contains tests 🔒 No security concerns identified ⚡ Recommended focus areas for",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "router-component-store#356",
+        "snippet": "@copilot Dead code analysis fails (knip script). Do deep research on Knip with Angular and publishable npm packages to figure out how to resolve this. Feel free to update Knip. You might need to updat",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "surrealdb.py#5",
+        "snippet": "runs-on: ubuntu-big",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "catalyst#264",
+        "snippet": "@copilot please address comments",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "cli#435",
+        "snippet": "Actionable comments posted: 0 🧹 Nitpick comments (1) CHANGELOG.md (1) 11-12: Nit: Make bullet phrasing sharper and more descriptive Consider tightening the second bullet to better convey the change at",
+        "matched_pattern": "\\bnit:\\b|\\bnit\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "flow-wing#16",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "crewai#2807",
+        "snippet": "Disclaimer: This review was made by a crew of AI Agents. Code Review Comment for PR #2807 - Knowledge Sources Fix Overview This pull request addresses the crucial issue of knowledge sources not being",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "gregmakesxyz#2",
+        "snippet": "Looks better, but the markdown in the summaries isn't being parsed as markdown. For example, [the repo](https://github.com/gthoma17/gregmakesxyz/blob/main/nfsn_config/README.md#to-setup-go-jamming-web",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "vargasjr-dev#355",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "powerappsdevmcp#3",
+        "snippet": "@copilot instead of this approach, please create a nUnit test project and use the MCP client package per https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-client",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "testing-copilot#10",
+        "snippet": "How are you running tests? pnpm --filter robots-are-here test fails for me ❮ pnpm --filter robots-are-here test > robots-are-here@1.0.0 test /Users/michael/development/oss/testing-copilot/packages/app",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "vargasjr-dev#502",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "ios-monorepo#2002",
+        "snippet": "I'm sorry but uuid, must actually not change. Instead, to make difference between old YAML file and new YAML file, the title of the file should be the same except for the suffix that changes from .act",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "zenn-ranking#9",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "minimal-games-hub#188",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "hello-world#1399",
+        "snippet": "@copilot This PR proposes a very large, security-sensitive addition: a full real-time collaborative editor (server + client), sandboxed build/run, extensive test suites, CI workflow updates, and compr",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "vargasjr-dev#381",
+        "snippet": "We don't need this because we apply migrations dynamically. we should be able to be resilient to these type of failures without crashing the site",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "bluefroganalytics#801",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) jwiedeman-github-io ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jun 14, 2025 6:13p",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "cursor-agent-mcp#23",
+        "snippet": "💡 Codex Review Here are some automated review suggestions for this pull request. ℹ️ About Codex in GitHub Your team has set up Codex to review pull requests in this repo. Reviews are triggered when yo",
+        "matched_pattern": "👍"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "konstituzzjoni_v3#2",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) konstituzzjoni ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jul 1, 2025 8:58am kons",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "saifuu#370",
+        "snippet": "Deploying with Cloudflare Workers The latest updates on your project. Learn more about integrating Git with Workers. Status Name Latest Commit Preview URL Updated (UTC) ✅ Deployment successful! View l",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "chat#34",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) lightfast-chat ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jun 13, 2025 8:04am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "poloniex-trading-platform#181",
+        "snippet": "PR Code Suggestions ✨ Explore these optional code suggestions: CategorySuggestion ImpactGeneral ✅ Use environment variables for host Suggestion Impact:The suggestion was directly implemented - the har",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "fractals-in-finance-thesis#6",
+        "snippet": "Codex Review: Here are some suggestions. fractals-in-finance-thesis/src/fractalfinance/models/mmar.py Lines 15 to 33 in 2bba524 def simulate( n: int, H: float, *, cascade: CascadeParams | None = None,",
+        "matched_pattern": "👍"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "nearcore#13308",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "ssgoi#71",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) ssgoi-docs ✅ Ready (Inspect) Visit Preview 💬 Add feedback Aug 2, 2025 4:39am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "react_on_rails#1791",
+        "snippet": "Actionable comments posted: 0 CautionSome comments are outside the diff and can’t be posted inline due to platform limitations. ⚠️ Outside diff range comments (1) node_package/src/pro/ClientSideRender",
+        "matched_pattern": "\\blgtm\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "project-ps#118",
+        "snippet": "🧩 Analysis chain I'll review the changes in PR #118. Let me examine the current state of the search page file to provide a comprehensive review. 🏁 Script executed: #!/bin/bash # First, let's examine t",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "smartcrawler#48",
+        "snippet": "Deploying smartcrawler with Cloudflare Pages Latest commit: 40b4158 Status: ✅ Deploy successful! Preview URL: https://9f7499ce.smartcrawler.pages.dev Branch Preview URL: https://feature-data-extractio",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "rakuimporter#99",
+        "snippet": "Summary of Changes Hello @yikuochan, I'm Gemini Code Assist1! I'm currently reviewing this pull request and will post my feedback shortly. In the meantime, here's a summary to help you and other revie",
+        "matched_pattern": "👍"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "liveblocks#2573",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "napari-mcp#34",
+        "snippet": "Actionable comments posted: 6 CautionSome comments are outside the diff and can’t be posted inline due to platform limitations. ⚠️ Outside diff range comments (1) docs/scripts/gen_ref_pages.py (1) 10-",
+        "matched_pattern": "\\blgtm\\b; ✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "packpalgo-frontend#15",
+        "snippet": "✅ Deploy Preview for packpalgopretripp ready! Name Link 🔨 Latest commit 7978de4 🔍 Latest deploy log https://app.netlify.com/projects/packpalgopretripp/deploys/6895b46a306f380008622e33 😎 Deploy Preview",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "personal-telling-service#2",
+        "snippet": "Hello @tkwbr999, I'm Gemini Code Assist1! I'm currently reviewing this pull request and will post my feedback shortly. In the meantime, here's a summary to help you and other reviewers quickly get up",
+        "matched_pattern": "👍"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "om-ai#22",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) om-ai ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jul 30, 2025 0:10am",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "laslyzhou.github.io#16",
+        "snippet": "The latest updates on your projects. Learn more about Vercel for Git ↗︎ Name Status Preview Comments Updated (UTC) laslyzhou-github-io-rn9l ✅ Ready (Inspect) Visit Preview 💬 Add feedback Jul 12, 2025",
+        "matched_pattern": "✅"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "acceptance_signal",
+        "pr_key": "inversify-hexagonal-example#4",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:APPROVED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "liam#2221",
+        "snippet": "PR Reviewer Guide 🔍 Here are some key observations to aid the review process: ⏱️ Estimated effort to review: 2 🔵🔵⚪⚪⚪ 🧪 No relevant tests 🔒 No security concerns identified ⚡ Recommended focus areas for",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "vue#62",
+        "snippet": "❌ Deploy Preview for mohpro failed. Why did it fail? → Name Link 🔨 Latest commit 0323315 🔍 Latest deploy log https://app.netlify.com/projects/mohpro/deploys/687e3e3cb091e00008a28ed9",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "roomledger#13",
+        "snippet": "✅ Deploy Preview for roomledger ready! Name Link 🔨 Latest commit 3d9c8b3 🔍 Latest deploy log https://app.netlify.com/projects/roomledger/deploys/68c9d053631bf100091b4367 😎 Deploy Preview https://deplo",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "eliza#3",
+        "snippet": "Walkthrough This update introduces a new modular core plugin system, adds a comprehensive Twitter client integration, and migrates existing plugins to use the new core plugin package. Major additions",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "liam#2224",
+        "snippet": "Updates to Preview Branch (remove-unique-field-2) ↗︎ Deployments Status Updated Database ✅ Thu, 26 Jun 2025 04:45:38 UTC Services ✅ Thu, 26 Jun 2025 04:45:38 UTC APIs ✅ Thu, 26 Jun 2025 04:45:38 UTC T",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "jcikl-account#2",
+        "snippet": "✅ Deploy Preview for flourishing-frangipane-68bea2 ready! Name Link 🔨 Latest commit eec7a92 🔍 Latest deploy log https://app.netlify.com/projects/flourishing-frangipane-68bea2/deploys/689347ed6ccbbd000",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "gmail-2-trello#79",
+        "snippet": "Actionable comments posted: 2 ♻️ Duplicate comments (2) test/test_shared.js (1) 265-292: HTML parsing still fragile. Already flagged. String matching won't handle complex HTML. test/test_class_app.js",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "omg#22",
+        "snippet": "✅ Deploy Preview for jovial-gelato-c1393b ready! Name Link 🔨 Latest commit 3c0b5a4 🔍 Latest deploy log https://app.netlify.com/projects/jovial-gelato-c1393b/deploys/68c7b98b92baf2000866df21 😎 Deploy P",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "my-okutama-site#133",
+        "snippet": "✅ Deploy Preview for okutama-volunteer ready! Name Link 🔨 Latest commit bf0989e 🔍 Latest deploy log https://app.netlify.com/projects/okutama-volunteer/deploys/6867cd8182a91a00083a0176 😎 Deploy Preview",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "save-to-tana#24",
+        "snippet": "Actionable comments posted: 0 ♻️ Duplicate comments (3) README.md (3) 5-6: Replace missing images with textual placeholders (or add assets). Images referenced here are not included in the PR and will",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "schema-lint-mcp-server#2",
+        "snippet": "Warning Rate limit exceeded @rebelice has exceeded the limit for the number of commits or files that can be reviewed per hour. Please wait 12 minutes and 55 seconds before requesting another review. ⌛",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "zion.app#4408",
+        "snippet": "❌ Deploy Preview for ziontechgroup failed. Why did it fail? → Name Link 🔨 Latest commit aca3d09 🔍 Latest deploy log https://app.netlify.com/projects/ziontechgroup/deploys/68a5b95efd72940008922423",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "coreyalejandro.github.io#2",
+        "snippet": "PR Reviewer Guide 🔍 Here are some key observations to aid the review process: ⏱️ Estimated effort to review: 2 🔵🔵⚪⚪⚪ 🧪 No relevant tests 🔒 No security concerns identified ⚡ Recommended focus areas for",
+        "matched_pattern": "security+(check|review|verify)"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "svuff#25",
+        "snippet": "@openhands-agent CI/CD not pass error log Run sg test --skip-snapshot-tests sg test --skip-snapshot-tests shell: /usr/bin/bash -e {0} env: TREE_SITTER_REF: v0.25.8 TREE_SITTER_REPO: https://github.com",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "work-squared#18",
+        "snippet": "Deploying with Cloudflare Workers The latest updates on your project. Learn more about integrating Git with Workers. Status Name Latest Commit Updated (UTC) ✅ Deployment successful! View logs work-squ",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "steadytext#77",
+        "snippet": "ImportantLooks good to me! 👍 Reviewed 7fe91a1 in 48 seconds. Click for details. Reviewed 61 lines of code in 4 files Skipped 0 files when reviewing. Skipped posting 4 draft comments. View those below.",
+        "matched_pattern": "(please|can you|could you)\\s+verify"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "saifuu#471",
+        "snippet": "Deploying with Cloudflare Workers The latest updates on your project. Learn more about integrating Git with Workers. Status Name Latest Commit Preview URL Updated (UTC) ✅ Deployment successful! View l",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "vrchat-albums#606",
+        "snippet": "Actionable comments posted: 1 ♻️ Duplicate comments (5) electron/lib/wrappedExifTool.ts (5) 71-87: Use rm({ recursive, force }) instead of rmdir to avoid cleanup failures rmdir fails when the director",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "flutter-cafe-app-ai#37",
+        "snippet": "@openhands-agent CIで以下のエラーが発生しています。以下のエラーを解決する修正をお願いします。 /home/runner/work/flutter-cafe-app-ai/flutter-cafe-app-ai/flutter_app/test/widgets/cart_item_card_test.dart: CartItemCard displays item details",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "evidence_request_signal",
+        "pr_key": "prometheoid#22",
+        "snippet": "✅ Deploy Preview for visionary-speculoos-523cde ready! Name Link 🔨 Latest commit 50fea2c 🔍 Latest deploy log https://app.netlify.com/projects/visionary-speculoos-523cde/deploys/688da8e5995b3300084a28b",
+        "matched_pattern": "\\blogs?\\b|\\bstack\\s*trace\\b|\\bbenchmark\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "kigali-sim#302",
+        "snippet": "Thank you! However, I have some questions. In this next step, be sure to compare the Java version of SalesRecalcStrategy which corresponds to _recalcSales in engine.js. The order of calling of recalc",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "inbox-zero#699",
+        "snippet": "@zudsniper is attempting to deploy a commit to the Inbox Zero OSS Program Team on Vercel. A member of the Team first needs to authorize it.",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "lingvo-monkeys#17",
+        "snippet": "Actionable comments posted: 0 ♻️ Duplicate comments (1) app/(noFooter)/play/[id]/components/Player.tsx (1) 1-378: Add visual feedback when saving session data. Currently, there's no visual indication",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "praisonai#885",
+        "snippet": "Actionable comments posted: 0 ♻️ Duplicate comments (2) examples/guardrail_example_fixed.py (2) 7-7: Import statement is complete and correct The import statement already includes TaskOutput as sugges",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "shmup-yours#50",
+        "snippet": "🎉 Excellent Self-Correction! You've done fantastic work responding to the feedback! I can see you've implemented all the missing pieces: ✅ What You've Successfully Delivered: ESLint Configuration: Com",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "productivity-hub#13",
+        "snippet": "PR Reviewer Guide 🔍 (Review updated until commit cc97850) Here are some key observations to aid the review process: ⏱️ Estimated effort to review: 4 🔵🔵🔵🔵⚪ 🧪 PR contains tests 🔒 No security concerns id",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "project-manager#19",
+        "snippet": "Actionable comments posted: 5 🧹 Nitpick comments (4) apps/cli/src/lib/base-command.ts (1) 124-251: Good implementation addressing past concerns, with minor suggestions for improvement. The cleanup imp",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "streamflow#255",
+        "snippet": "Someone is attempting to deploy this commit to the gadjicheikh6-gmailcom's projects Team on Vercel. To accomplish this, the commit author's email address needs to be associated with a GitHub account.",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "theninjarpg#661",
+        "snippet": "Actionable comments posted: 8 🔭 Outside diff range comments (4) app/src/server/api/routers/forum.ts (1) 83-91: Remove redundant fetchUser & attribute moderation to the displayed (effective) poster The",
+        "matched_pattern": "\\bnit:\\b|\\bnit\\b; \\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "osm-phones#79",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "codegen#33",
+        "snippet": "Code Review This pull request introduces a significant upgrade to the codegen-on-oss system architecture, including enhancements to the database, analysis pipeline, and API server. The changes are wel",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "permit2-rpc-manager#4",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "theninjarpg#631",
+        "snippet": "Actionable comments posted: 4 🧹 Nitpick comments (7) app/src/server/api/routers/combat.ts (1) 1083-1085: Consider indexing userSkill.activated Filtering every battle init on activated = true will scan",
+        "matched_pattern": "\\bnit:\\b|\\bnit\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "llama_index#5",
+        "snippet": "uv でのパッケージ管理を実装してください（llama-index-graph-stores-postgres直下・ SQLAlchemy と組み合わせて Psycopg 3 を使う）。 また、Linter が Fail しているのでコードフォーマットを修正してください（ファイル末尾 ：全ファイル、空白のトリミング：property_graph.py のみ）",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "resyntax#511",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "uplc-cape#15",
+        "snippet": "@copilot you should always use nix develop shell. Update the nix flake and cabal/chap indexes. Do not leave work.",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "wflow#1",
+        "snippet": "Actionable comments posted: 62 🧹 Nitpick comments (31) frontend/src/index.css (1) 5-12: Consider adding a global min-height to support full-height layouts Several React pages (e.g., Dashboard, Workflo",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "goscript#43",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "lingvo-monkeys#17",
+        "snippet": "Actionable comments posted: 6 🔭 Outside diff range comments (1) app/(noFooter)/play/[id]/components/Player.tsx (1) 238-250: 🛠️ Refactor suggestion Optimize dependency array to prevent unnecessary re-i",
+        "matched_pattern": "\\bneeds?\\s+to\\b"
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "signal_name": "change_request_signal",
+        "pr_key": "q_developer_integration_demo#8",
+        "snippet": "[no review body]",
+        "matched_pattern": "review_state:CHANGES_REQUESTED"
+      }
+    ],
+    "pathway_summary_metrics": [
+      {
+        "taxonomy_display_label": "Silent edit pathway",
+        "N_prs": 7032,
+        "share_of_prs": 33.76224313424237,
+        "merged_share": 73.13708759954494,
+        "median_validation_overhead": 0.0,
+        "takeover_share": 100.0
+      },
+      {
+        "taxonomy_display_label": "Early takeover pathway",
+        "N_prs": 4788,
+        "share_of_prs": 22.988285000960246,
+        "merged_share": 67.10526315789474,
+        "median_validation_overhead": 1.0,
+        "takeover_share": 100.0
+      },
+      {
+        "taxonomy_display_label": "No human handling",
+        "N_prs": 4535,
+        "share_of_prs": 21.773574034952947,
+        "merged_share": 58.39029768467475,
+        "median_validation_overhead": 0.0,
+        "takeover_share": 0.0
+      },
+      {
+        "taxonomy_display_label": "Discussion only pathway",
+        "N_prs": 4473,
+        "share_of_prs": 21.47589782984444,
+        "merged_share": 72.94880393471944,
+        "median_validation_overhead": 1.0,
+        "takeover_share": 3.1522468142186453
+      }
+    ],
+    "baseline_sanity_checks": [
+      {
+        "section": "counts",
+        "group": "agent",
+        "metric": "pr_count",
+        "value": "33353",
+        "detail": null
+      },
+      {
+        "section": "counts",
+        "group": "agent",
+        "metric": "merged_pr_count",
+        "value": "22674",
+        "detail": "merge-proxy merged_n"
+      },
+      {
+        "section": "dedupe",
+        "group": "agent",
+        "metric": "dedupe_rows_dropped",
+        "value": "815",
+        "detail": "dropped while keeping earliest open_time per pr_key"
+      },
+      {
+        "section": "counts",
+        "group": "human",
+        "metric": "pr_count",
+        "value": "3017",
+        "detail": null
+      },
+      {
+        "section": "counts",
+        "group": "human",
+        "metric": "merged_pr_count",
+        "value": "2175",
+        "detail": "merge-proxy merged_n"
+      },
+      {
+        "section": "dedupe",
+        "group": "human",
+        "metric": "dedupe_rows_dropped",
+        "value": "13",
+        "detail": "dropped while keeping earliest open_time per pr_key"
+      },
+      {
+        "section": "counts",
+        "group": "bot",
+        "metric": "pr_count",
+        "value": "114",
+        "detail": null
+      },
+      {
+        "section": "counts",
+        "group": "bot",
+        "metric": "merged_pr_count",
+        "value": "88",
+        "detail": "merge-proxy merged_n"
+      },
+      {
+        "section": "dedupe",
+        "group": "bot",
+        "metric": "dedupe_rows_dropped",
+        "value": "0",
+        "detail": "dropped while keeping earliest open_time per pr_key"
+      },
+      {
+        "section": "scope",
+        "group": "global",
+        "metric": "start_date",
+        "value": "2025-04-01",
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "global",
+        "metric": "end_date",
+        "value": "2026-01-31",
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "global",
+        "metric": "available_agents_n",
+        "value": "14",
+        "detail": "amazon,claude,codegen,codex,copilot,cosine,cursor,devin,jules,junie,junieap,openhands,openhandsb,tembo"
+      },
+      {
+        "section": "scope",
+        "group": "global",
+        "metric": "selected_agents_effective_n",
+        "value": "14",
+        "detail": "amazon,claude,codegen,codex,copilot,cosine,cursor,devin,jules,junie,junieap,openhands,openhandsb,tembo"
+      },
+      {
+        "section": "dedupe",
+        "group": "global",
+        "metric": "duplicate_pr_keys_before",
+        "value": "828",
+        "detail": null
+      },
+      {
+        "section": "dedupe",
+        "group": "global",
+        "metric": "duplicate_pr_keys_after",
+        "value": "0",
+        "detail": null
+      }
+    ],
+    "baseline_rq2_sanity_checks": [
+      {
+        "section": "scope",
+        "group": "agent",
+        "metric": "prs_n",
+        "value": "33353.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "agent",
+        "metric": "merged_prs_n",
+        "value": "22674.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "human",
+        "metric": "prs_n",
+        "value": "3017.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "human",
+        "metric": "merged_prs_n",
+        "value": "2175.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "bot",
+        "metric": "prs_n",
+        "value": "114.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "scope",
+        "group": "bot",
+        "metric": "merged_prs_n",
+        "value": "88.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "timeline",
+        "group": "agent",
+        "metric": "timeline_events_n",
+        "value": "135318.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "timeline",
+        "group": "human",
+        "metric": "timeline_events_n",
+        "value": "16714.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "timeline",
+        "group": "bot",
+        "metric": "timeline_events_n",
+        "value": "350.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "timeline",
+        "group": "global",
+        "metric": "missing_author_type_group_pct",
+        "value": "0.0",
+        "passed": true,
+        "detail": "must be < 1%"
+      },
+      {
+        "section": "first_response",
+        "group": "agent",
+        "metric": "first_human_response_prs_n",
+        "value": "8304.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_response",
+        "group": "bot",
+        "metric": "first_human_response_prs_n",
+        "value": "44.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_response",
+        "group": "human",
+        "metric": "first_human_response_prs_n",
+        "value": "1031.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_response",
+        "group": "global",
+        "metric": "required_groups_present_agent_human",
+        "value": "1.0",
+        "passed": true,
+        "detail": "present=['agent', 'bot', 'human']"
+      },
+      {
+        "section": "first_action",
+        "group": "agent",
+        "metric": "first_action_rows_n",
+        "value": "8304.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_action",
+        "group": "bot",
+        "metric": "first_action_rows_n",
+        "value": "44.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_action",
+        "group": "human",
+        "metric": "first_action_rows_n",
+        "value": "1031.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "first_action",
+        "group": "global",
+        "metric": "required_groups_present_agent_human",
+        "value": "1.0",
+        "passed": true,
+        "detail": "present=['agent', 'bot', 'human']"
+      },
+      {
+        "section": "merge_proxy",
+        "group": "agent",
+        "metric": "merged_n",
+        "value": "22674.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "agent",
+        "metric": "commit_coverage_pct",
+        "value": "62.52976978036517",
+        "passed": true,
+        "detail": "must be > 0 when merged_n > 0"
+      },
+      {
+        "section": "merge_proxy",
+        "group": "agent",
+        "metric": "unknown_commit_author_pct",
+        "value": "0.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "agent",
+        "metric": "merged_without_non_author_commits_pct",
+        "value": "11.412046833121737",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "bot",
+        "metric": "merged_n",
+        "value": "88.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "bot",
+        "metric": "commit_coverage_pct",
+        "value": "75.0",
+        "passed": true,
+        "detail": "must be > 0 when merged_n > 0"
+      },
+      {
+        "section": "merge_proxy",
+        "group": "bot",
+        "metric": "unknown_commit_author_pct",
+        "value": "0.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "bot",
+        "metric": "merged_without_non_author_commits_pct",
+        "value": "43.93939393939394",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "human",
+        "metric": "merged_n",
+        "value": "2175.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "human",
+        "metric": "commit_coverage_pct",
+        "value": "69.60919540229885",
+        "passed": true,
+        "detail": "must be > 0 when merged_n > 0"
+      },
+      {
+        "section": "merge_proxy",
+        "group": "human",
+        "metric": "unknown_commit_author_pct",
+        "value": "0.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "merge_proxy",
+        "group": "human",
+        "metric": "merged_without_non_author_commits_pct",
+        "value": "30.38309114927345",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "rq2_transitions",
+        "group": "global",
+        "metric": "transition_count_matches_matrix_total",
+        "value": "1.0",
+        "passed": true,
+        "detail": "expected=5631, actual=5631"
+      },
+      {
+        "section": "rq2_transitions",
+        "group": "global",
+        "metric": "transition_count_matches_sequence_count",
+        "value": "1.0",
+        "passed": true,
+        "detail": "expected=5631, actual=5631"
+      },
+      {
+        "section": "rq2_transitions",
+        "group": "global",
+        "metric": "anchor_action_variety_ge_2",
+        "value": "4.0",
+        "passed": true,
+        "detail": null
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "latency_contains_agent_human",
+        "value": "present=['agent', 'bot', 'human']",
+        "passed": true,
+        "detail": "present=['agent', 'bot', 'human']"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "latency_agent_human_N_gt_0",
+        "value": "{'agent': 8304, 'human': 1031}",
+        "passed": true,
+        "detail": "{'agent': 8304, 'human': 1031}"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "first_action_contains_agent_human",
+        "value": "present=['agent', 'bot', 'human']",
+        "passed": true,
+        "detail": "present=['agent', 'bot', 'human']"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "first_action_agent_human_count_gt_0",
+        "value": "{'agent': 8304, 'human': 1031}",
+        "passed": true,
+        "detail": "{'agent': 8304, 'human': 1031}"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "first_action_share_sums_to_1",
+        "value": "{'agent': 1.0, 'bot': 1.0, 'human': 1.0}",
+        "passed": true,
+        "detail": "{'agent': 1.0, 'bot': 1.0, 'human': 1.0}"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "merge_proxy_contains_agent_human",
+        "value": "present=['agent', 'bot', 'human']",
+        "passed": true,
+        "detail": "present=['agent', 'bot', 'human']"
+      },
+      {
+        "section": "acceptance",
+        "group": "global",
+        "metric": "merge_proxy_human_coverage_gt_0_if_merged",
+        "value": "merged_n=2175, commit_coverage_pct=69.60919540229885",
+        "passed": true,
+        "detail": "merged_n=2175, commit_coverage_pct=69.60919540229885"
+      }
+    ],
+    "per_agent_summary": [
+      {
+        "agent_name": "jules",
+        "pr_count": 6359,
+        "merged_count": 4557,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0101388888888888,
+        "comment_first_share": 0.6035714285714285
+      },
+      {
+        "agent_name": "cursor",
+        "pr_count": 5334,
+        "merged_count": 3117,
+        "share_merge_without_non_author_commits": 0.003671970624235,
+        "median_response_time_hours": 0.0111111111111111,
+        "comment_first_share": 0.5238508239375542
+      },
+      {
+        "agent_name": "devin",
+        "pr_count": 4927,
+        "merged_count": 3103,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0022222222222222,
+        "comment_first_share": 0.7058383233532934
+      },
+      {
+        "agent_name": "claude",
+        "pr_count": 4722,
+        "merged_count": 4050,
+        "share_merge_without_non_author_commits": 0.0221975582685904,
+        "median_response_time_hours": 0.035,
+        "comment_first_share": 0.4129775621588841
+      },
+      {
+        "agent_name": "codex",
+        "pr_count": 4716,
+        "merged_count": 4110,
+        "share_merge_without_non_author_commits": 0.5180965147453083,
+        "median_response_time_hours": 0.0036111111111111,
+        "comment_first_share": 0.5783289817232375
+      },
+      {
+        "agent_name": "copilot",
+        "pr_count": 4471,
+        "merged_count": 2864,
+        "share_merge_without_non_author_commits": 0.0026301946344029,
+        "median_response_time_hours": 0.3433333333333333,
+        "comment_first_share": 0.5042892156862745
+      },
+      {
+        "agent_name": "junie",
+        "pr_count": 1043,
+        "merged_count": 78,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0047222222222222,
+        "comment_first_share": 0.7704918032786885
+      },
+      {
+        "agent_name": "codegen",
+        "pr_count": 851,
+        "merged_count": 327,
+        "share_merge_without_non_author_commits": 0.0040322580645161,
+        "median_response_time_hours": 0.0019444444444444,
+        "comment_first_share": 0.8676470588235294
+      },
+      {
+        "agent_name": "cosine",
+        "pr_count": 442,
+        "merged_count": 249,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0069444444444444,
+        "comment_first_share": 0.5179856115107914
+      },
+      {
+        "agent_name": "amazon",
+        "pr_count": 189,
+        "merged_count": 82,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.3097222222222222,
+        "comment_first_share": 0.4516129032258064
+      },
+      {
+        "agent_name": "openhandsb",
+        "pr_count": 129,
+        "merged_count": 76,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0497222222222222,
+        "comment_first_share": 0.5531914893617021
+      },
+      {
+        "agent_name": "tembo",
+        "pr_count": 101,
+        "merged_count": 28,
+        "share_merge_without_non_author_commits": 0.0,
+        "median_response_time_hours": 0.0130555555555555,
+        "comment_first_share": 0.6551724137931034
+      },
+      {
+        "agent_name": "openhands",
+        "pr_count": 51,
+        "merged_count": 33,
+        "share_merge_without_non_author_commits": null,
+        "median_response_time_hours": null,
+        "comment_first_share": null
+      },
+      {
+        "agent_name": "junieap",
+        "pr_count": 18,
+        "merged_count": 0,
+        "share_merge_without_non_author_commits": null,
+        "median_response_time_hours": 0.0016666666666666,
+        "comment_first_share": 1.0
+      }
+    ],
+    "agent_sensitivity_drop_top": [
+      {
+        "scenario": "all",
+        "pr_count": 33353,
+        "median_response_time_hours": 0.0277777777777777,
+        "comment_first_share": 0.5592485549132948,
+        "share_merge_without_non_author_commits": 0.1141204683312173
+      },
+      {
+        "scenario": "drop_top1",
+        "pr_count": 26994,
+        "median_response_time_hours": 0.0341666666666666,
+        "comment_first_share": 0.5523385300668151,
+        "share_merge_without_non_author_commits": 0.139832339469363
+      },
+      {
+        "scenario": "drop_top2",
+        "pr_count": 21660,
+        "median_response_time_hours": 0.0386111111111111,
+        "comment_first_share": 0.5577847786436744,
+        "share_merge_without_non_author_commits": 0.162221998591124
+      }
+    ]
+  }
+}

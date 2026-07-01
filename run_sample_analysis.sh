@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [[ -n "${PYTHON_BIN:-}" ]]; then
+  PYTHON_BIN="$PYTHON_BIN"
+elif [[ -x /opt/anaconda3/bin/python ]]; then
+  PYTHON_BIN="/opt/anaconda3/bin/python"
+else
+  PYTHON_BIN="python3"
+fi
+PAPER_TITLE="Characterizing Human-Agent Dynamics in Agentic Pull Requests"
+
+"$PYTHON_BIN" "$ROOT_DIR/scripts/run_reproduction.py" \
+  --dataset-dir "$ROOT_DIR/data/combined_dataset" \
+  --human-dataset-dir "$ROOT_DIR/data/combined_dataset" \
+  --optional-dataset-dir "$ROOT_DIR/data" \
+  --workdir "$ROOT_DIR/results/submission_sample" \
+  --run-name submission_sample \
+  --drop-issues \
+  --paper-title "$PAPER_TITLE" \
+  --python-executable "$PYTHON_BIN"
+
+rm -rf "$ROOT_DIR/results/submission_sample/figures"
+"$PYTHON_BIN" "$ROOT_DIR/scripts/generate_manuscript_figures.py" \
+  --data-dir "$ROOT_DIR/data/combined_dataset" \
+  --run-dir "$ROOT_DIR/results/submission_sample" \
+  --figure-dir "$ROOT_DIR/results/submission_sample/figures" \
+  --table-dir "$ROOT_DIR/results/submission_sample/manuscript_tables"

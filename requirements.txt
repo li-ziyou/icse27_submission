@@ -1,0 +1,9 @@
+pandas
+numpy
+matplotlib
+datasets
+tqdm
+pytz
+scipy
+nltk
+vaderSentiment
